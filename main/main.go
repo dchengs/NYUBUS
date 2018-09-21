@@ -1,7 +1,9 @@
 package main
-import(
-	"nyubus/objects"
+
+import (
+	"nyubus/common"
 )
-func main(){
-    objects.ParseCSV()
+
+func main() {
+	common.ParseCSV()
 }

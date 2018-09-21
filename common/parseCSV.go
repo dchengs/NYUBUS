@@ -1,23 +1,15 @@
-package objects
+package common
 
 import (
 	"bufio"
 	"encoding/csv"
 	"fmt"
+	dt "nyubus/datatypes"
+	mdb "nyubus/mongodb"
 	"os"
 )
 
-type Station struct {
-	Route       string   `json:_id bson:_id`
-	StationName string   `json:stationame bson:stationname`
-	TimeTable   []string `json:timetable bson:timetable`
-}
-
-type Bus struct {
-	Route       string    `json:route bson:route`
-	StationList []Station `json:stationlist bson:stationlist`
-}
-
+//ParseCSV parses a given schedule of a route to objects and store them in database
 func ParseCSV() {
 	//create reader to read filename
 
@@ -42,7 +34,7 @@ func ParseCSV() {
 	// get the number of station (first row)
 	stationNum := len(lines[0])
 	// list of station
-	stationList := []Station{}
+	stationList := []dt.Station{}
 	//loop through the file by column
 	for currentColumn := 0; currentColumn < stationNum; currentColumn++ {
 		stationName := ""
@@ -54,11 +46,12 @@ func ParseCSV() {
 			}
 			stationTT = append(stationTT, lines[currentRow][currentColumn])
 		}
-		newStation := Station{Route: route, StationName: stationName, TimeTable: stationTT}
+		newStation := dt.Station{Route: route, StationName: stationName, TimeTable: stationTT}
 		stationList = append(stationList, newStation)
 
 	}
 	//create new bus and push to database
-	newBus := Bus{Route: route, StationList: stationList}
-	//missing database functions for now
+	newBus := dt.Bus{Route: route, StationList: stationList}
+	mdb.Insert("nyubus", "route", newBus)
+
 }
