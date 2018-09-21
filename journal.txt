@@ -1,0 +1,6 @@
+Current implementation:  
+update function
+
+
+Current bugs:
+Input reading somehow appends \n to the end of string 
