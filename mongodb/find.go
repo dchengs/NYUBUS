@@ -1,6 +1,7 @@
 package mongodb
 
 import (
+	"fmt"
 	dt "nyubus/datatypes"
 
 	mgo "gopkg.in/mgo.v2"
@@ -22,5 +23,6 @@ func Find(database, collection, route string) (dt.Bus, error) {
 	if err != nil {
 		return result, err
 	}
+	fmt.Println(result)
 	return result, nil
 }

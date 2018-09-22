@@ -1,27 +1,24 @@
 package common
 
 import (
-	"bufio"
 	"encoding/csv"
-	"fmt"
 	dt "nyubus/datatypes"
 	mdb "nyubus/mongodb"
+	t "nyubus/tools"
 	"os"
 )
 
 //ParseCSV parses a given schedule of a route to objects and store them in database
 func ParseCSV() {
 	//create reader to read filename
-
-	f, err := os.Open("Book1.csv")
+	fileName := t.Input("filename")
+	f, err := os.Open(fileName)
 	if err != nil {
 		panic(err)
 	}
 	defer f.Close()
 	//reading route
-	reader := bufio.NewReader(os.Stdin)
-	fmt.Print("Enter Route: ")
-	route, _ := reader.ReadString('\n')
+	route := t.Input("route")
 
 	// Read File into a Variable
 	lines, err := csv.NewReader(f).ReadAll()

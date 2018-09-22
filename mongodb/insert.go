@@ -1,10 +1,9 @@
 package mongodb
 
 import (
-	"bufio"
 	"fmt"
 	dt "nyubus/datatypes"
-	"os"
+	t "nyubus/tools"
 
 	"gopkg.in/mgo.v2"
 )
@@ -25,12 +24,14 @@ func Insert(database string, collection string, bus dt.Bus) (bool, error) {
 		//prompt for update
 		prompt := true
 		for prompt {
-			reader := bufio.NewReader(os.Stdin)
-			fmt.Println("Would you like to update existing item? (y/n)")
-			response, _ := reader.ReadString('\n')
+			response := t.Input("response")
 			if response == "y" || response == "Y" {
 				//do update
 				prompt = false
+				updated, err := Update(c, bus.Route, bus)
+				if updated == false || err != nil {
+					panic(err)
+				}
 			} else if response == "n" || response == "N" {
 				fmt.Println("Insertion aborted")
 				return false, nil
